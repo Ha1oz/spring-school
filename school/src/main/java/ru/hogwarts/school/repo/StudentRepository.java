@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
-public class StudentsRepository {
+public class StudentRepository {
     private static long ID_COUNTER = 1;
 
     private final Map<Long, Student> studentById = new HashMap<>();
