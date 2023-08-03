@@ -8,7 +8,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.entities.Faculty;
-import ru.hogwarts.school.repo.FacultyRepository;
+import ru.hogwarts.school.exceptions.FacultyNotFoundException;
+import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,27 +32,24 @@ class FacultyServiceTest {
     @Test
     void add() {
         facultyService.add(faculty);
-        Mockito.verify(facultyRepositoryMock, Mockito.times(1)).add(Mockito.any());
+        Mockito.verify(facultyRepositoryMock, Mockito.times(1)).save(Mockito.any());
     }
 
     @Test
     void update() {
         facultyService.update(faculty);
-        Mockito.verify(facultyRepositoryMock, Mockito.times(1)).update(Mockito.any());
+        Mockito.verify(facultyRepositoryMock, Mockito.times(1)).save(Mockito.any());
     }
 
     @Test
     void delete() {
         facultyService.delete(faculty.getId());
-        Mockito.verify(facultyRepositoryMock, Mockito.times(1)).delete(Mockito.any());
+        Mockito.verify(facultyRepositoryMock, Mockito.times(1)).deleteById(Mockito.any());
     }
 
     @Test
     void get() {
-        Faculty expected = faculty;
-
-        Mockito.doReturn(expected).when(facultyRepositoryMock).get(Mockito.any());
-        Assertions.assertEquals(expected, facultyService.get(faculty.getId()));
+        Assertions.assertThrows(FacultyNotFoundException.class,() -> facultyService.get(faculty.getId()));
     }
 
     @Test
@@ -60,16 +58,16 @@ class FacultyServiceTest {
         expected.add(faculty);
         expected.add(faculty);
 
-        Mockito.doReturn(expected).when(facultyRepositoryMock).getByColor(Mockito.anyString());
+        Mockito.doReturn(expected).when(facultyRepositoryMock).findByColor(Mockito.anyString());
         Assertions.assertEquals(expected, facultyService.getByColor(faculty.getColor()));
     }
 
     @Test
     void getAll() {
-        Map<Long, Faculty> expected = new HashMap<>();
-        expected.put(faculty.getId(), faculty);
+        List<Faculty> expected = new ArrayList<>();
+        expected.add(faculty);
 
-        Mockito.doReturn(expected).when(facultyRepositoryMock).getAll();
+        Mockito.doReturn(expected).when(facultyRepositoryMock).findAll();
         Assertions.assertEquals(expected, facultyService.getAll());
     }
 }

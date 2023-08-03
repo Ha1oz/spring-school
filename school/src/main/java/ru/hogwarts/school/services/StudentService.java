@@ -2,40 +2,40 @@ package ru.hogwarts.school.services;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.entities.Student;
-import ru.hogwarts.school.repo.StudentRepository;
+import ru.hogwarts.school.exceptions.StudentNotFoundException;
+import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentsRepository) {
-        this.studentRepository = studentsRepository;
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
     public Student add(Student student) {
-        return studentRepository.add(student);
+        return studentRepository.save(student);
     }
 
     public Student update(Student student) {
-        return studentRepository.update(student);
+        return studentRepository.save(student);
     }
 
-    public Student delete(Long id) {
-        return studentRepository.delete(id);
+    public void delete(Long id) {
+        studentRepository.deleteById(id);
     }
 
     public Student get(Long id) {
-        return studentRepository.get(id);
+        return studentRepository.findById(id).orElseThrow(StudentNotFoundException::new);
     }
 
-    public List<Student> getByAge(int age) {
-        return studentRepository.getByAge(age);
+    public Collection<Student> getByAge(int age) {
+        return studentRepository.findByAge(age);
     }
 
-    public Map<Long, Student> getAll() {
-        return studentRepository.getAll();
+    public Collection<Student> getAll() {
+        return studentRepository.findAll();
     }
 }

@@ -1,11 +1,11 @@
 package ru.hogwarts.school.controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.entities.Student;
 import ru.hogwarts.school.services.StudentService;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/student")
@@ -23,27 +23,28 @@ public class StudentController {
     }
 
     @PutMapping
-    public Student update(@RequestBody Student student) {
-        return studentService.update(student);
+    public ResponseEntity<Student> update(@RequestBody Student student) {
+        return ResponseEntity.ok(studentService.update(student));
     }
 
     @DeleteMapping
-    public Student delete(long id) {
-        return studentService.delete(id);
+    public ResponseEntity delete(long id) {
+        studentService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public Student get(long id) {
-        return studentService.get(id);
+    public ResponseEntity<Student> get(long id) {
+        return ResponseEntity.ok(studentService.get(id));
     }
 
     @GetMapping("/by-age")
-    public List<Student> getByAge(int age) {
-        return studentService.getByAge(age);
+    public ResponseEntity<Collection<Student>> getByAge(int age) {
+        return ResponseEntity.ok(studentService.getByAge(age));
     }
 
     @GetMapping("/all")
-    public Map<Long, Student> getAll() {
-        return studentService.getAll();
+    public ResponseEntity<Collection<Student>> getAll() {
+        return ResponseEntity.ok(studentService.getAll());
     }
 }

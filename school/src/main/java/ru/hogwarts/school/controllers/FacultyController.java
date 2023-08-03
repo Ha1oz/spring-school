@@ -1,11 +1,11 @@
 package ru.hogwarts.school.controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.entities.Faculty;
 import ru.hogwarts.school.services.FacultyService;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/faculty")
@@ -23,27 +23,28 @@ public class FacultyController {
     }
 
     @PutMapping
-    public Faculty update(@RequestBody Faculty faculty) {
-        return facultyService.update(faculty);
+    public ResponseEntity<Faculty> update(@RequestBody Faculty faculty) {
+        return ResponseEntity.ok(facultyService.update(faculty));
     }
 
     @DeleteMapping
-    public Faculty delete(Long id) {
-        return facultyService.delete(id);
+    public ResponseEntity delete(Long id) {
+        facultyService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public Faculty get(Long id) {
-        return facultyService.get(id);
+    public ResponseEntity<Faculty> get(Long id) {
+        return ResponseEntity.ok(facultyService.get(id));
     }
 
     @GetMapping("/by-color")
-    public List<Faculty> getByColor(String color) {
-        return facultyService.getByColor(color);
+    public ResponseEntity<Collection<Faculty>> getByColor(String color) {
+        return ResponseEntity.ok(facultyService.getByColor(color));
     }
 
     @GetMapping("/all")
-    public Map<Long, Faculty> getAll() {
-        return facultyService.getAll();
+    public ResponseEntity<Collection<Faculty>> getAll() {
+        return ResponseEntity.ok(facultyService.getAll());
     }
 }
