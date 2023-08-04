@@ -2,10 +2,11 @@ package ru.hogwarts.school.services;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.entities.Faculty;
-import ru.hogwarts.school.repo.FacultyRepository;
+import ru.hogwarts.school.exceptions.FacultyNotFoundException;
+import ru.hogwarts.school.repositories.FacultyRepository;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FacultyService {
@@ -17,26 +18,26 @@ public class FacultyService {
     }
 
     public Faculty add(Faculty faculty) {
-        return facultyRepository.add(faculty);
+        return facultyRepository.save(faculty);
     }
 
     public Faculty update(Faculty faculty) {
-        return facultyRepository.update(faculty);
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty delete(Long id) {
-        return facultyRepository.delete(id);
+    public void delete(Long id) {
+        facultyRepository.deleteById(id);
     }
 
     public Faculty get(Long id) {
-        return facultyRepository.get(id);
+        return facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new);
     }
 
     public List<Faculty> getByColor(String color) {
-        return facultyRepository.getByColor(color);
+        return facultyRepository.findByColor(color);
     }
 
-    public Map<Long, Faculty> getAll() {
-        return facultyRepository.getAll();
+    public Collection<Faculty> getAll() {
+        return facultyRepository.findAll();
     }
 }

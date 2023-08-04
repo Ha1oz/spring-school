@@ -2,6 +2,7 @@ package ru.hogwarts.school.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,5 +22,10 @@ public class SchoolExceptionHandler {
     public ResponseEntity<Object> handleStudentNotFoundException(StudentNotFoundException e) {
         LOGGER.error(e.toString());
         return new ResponseEntity<>("Student is not found.", HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException e) {
+        LOGGER.error(e.toString());
+        return new ResponseEntity<>("Data is not found.", HttpStatus.NOT_FOUND);
     }
 }
