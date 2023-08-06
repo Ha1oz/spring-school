@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.hogwarts.school.entities.Faculty;
 import ru.hogwarts.school.entities.Student;
 import ru.hogwarts.school.exceptions.FacultyNotFoundException;
 import ru.hogwarts.school.exceptions.StudentNotFoundException;
@@ -25,7 +26,7 @@ class StudentServiceTest {
     @BeforeEach
     void setUp() {
         studentService = new StudentService(studentRepositoryMock);
-        student = new Student(1L,"A", 23);
+        student = new Student(1L,"A", 23, new Faculty());
     }
 
     @Test
