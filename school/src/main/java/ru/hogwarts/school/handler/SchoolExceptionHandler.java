@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.hogwarts.school.exceptions.AvatarNotFoundException;
 import ru.hogwarts.school.exceptions.FacultyNotFoundException;
 import ru.hogwarts.school.exceptions.StudentNotFoundException;
 
@@ -22,6 +23,11 @@ public class SchoolExceptionHandler {
     public ResponseEntity<Object> handleStudentNotFoundException(StudentNotFoundException e) {
         LOGGER.error(e.toString());
         return new ResponseEntity<>("Student is not found.", HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(AvatarNotFoundException.class)
+    public ResponseEntity<Object> handleAvatarNotFoundException(AvatarNotFoundException e) {
+        LOGGER.error(e.toString());
+        return new ResponseEntity<>("Avatar is not found.", HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException e) {
