@@ -24,8 +24,8 @@ public class StudentController {
     }
 
     @PutMapping
-    public ResponseEntity<Student> update(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.update(student));
+    public Student update(@RequestBody Student student) {
+        return studentService.update(student);
     }
 
     @DeleteMapping
@@ -35,26 +35,26 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<Student> get(long id) {
-        return ResponseEntity.ok(studentService.get(id));
+    public Student get(long id) {
+        return studentService.get(id);
     }
 
     @GetMapping("/by-age")
-    public ResponseEntity<Collection<Student>> getByAge(int age) {
-        return ResponseEntity.ok(studentService.getByAge(age));
+    public Collection<Student> getByAge(int age) {
+        return studentService.getByAge(age);
     }
     @GetMapping("/by-age-between")
-    public ResponseEntity<Collection<Student>> getByAge(int minAge, int maxAge) {
-        return ResponseEntity.ok(studentService.getByAgeBetween(minAge, maxAge));
+    public Collection<Student> getByAge(int minAge, int maxAge) {
+        return studentService.getByAgeBetween(minAge, maxAge);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Collection<Student>> getAll() {
-        return ResponseEntity.ok(studentService.getAll());
+    public Collection<Student> getAll() {
+        return studentService.getAll();
     }
 
     @GetMapping("/faculty")
-    public ResponseEntity<Faculty> getFacultyFromStudent(Long id) {
-        return ResponseEntity.ok(studentService.get(id).getFaculty());
+    public Faculty getFacultyFromStudent(Long id) {
+        return studentService.get(id).getFaculty();
     }
 }
