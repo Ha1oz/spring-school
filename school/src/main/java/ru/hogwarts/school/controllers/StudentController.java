@@ -73,4 +73,15 @@ public class StudentController {
     public Collection<String> getOrderedStartWithAStudents() {
         return studentService.getOrderedStartWithAMethod2();
     }
+
+    @GetMapping("/test-threads")
+    public ResponseEntity testThreads(){
+       studentService.testThreads();
+       return ResponseEntity.ok().build();
+    }
+    @GetMapping("/test-threads-2")
+    public ResponseEntity testThreads2(){
+        studentService.testThreadsMethod2();
+        return ResponseEntity.ok().build();
+    }
 }

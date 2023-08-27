@@ -15,6 +15,7 @@ import java.util.List;
 public class StudentService {
     private final static Logger log = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
+    private final Object flagObject = new Object();
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -90,5 +91,39 @@ public class StudentService {
                 .sorted(Comparator.comparing(Student::getName))
                 .map(f -> f.getName().toUpperCase())
                 .toList();
+    }
+    public void testThreads() {
+        log.info("Test-threads method was invoked.");
+
+        List<Student> students = studentRepository.findAll();
+
+        doOperation(students.get(0), students.get(1));
+
+        new Thread(() -> doOperation(students.get(2), students.get(3))).start();
+        new Thread(() -> doOperation(students.get(4), students.get(5))).start();
+
+    }
+    public void testThreadsMethod2() {
+        log.info("Test-threads-2 method was invoked.");
+
+        List<Student> students = studentRepository.findAll();
+
+        doOperationMethod2(students.get(0), students.get(1));
+
+        new Thread(() -> doOperationMethod2(students.get(2), students.get(3)))
+                .start();
+        new Thread(() -> doOperationMethod2(students.get(4), students.get(5)))
+                .start();
+
+    }
+    private void doOperation(Student student1, Student student2){
+        System.out.println("student1 = " + student1);
+        System.out.println("student2 = " + student2);
+    }
+    private void doOperationMethod2(Student student1, Student student2){
+        synchronized (flagObject) {
+            System.out.println("student1 = " + student1);
+            System.out.println("student2 = " + student2);
+        }
     }
 }
