@@ -5,10 +5,15 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.services.api.InfoService;
 
 @Service
-@Profile("!production")
+@Profile("production")
 public class infoServiceTest implements InfoService {
     @Override
     public String getPort() {
         return "test-port";
+    }
+
+    @Override
+    public Long getValue() {
+        return -1L;
     }
 }

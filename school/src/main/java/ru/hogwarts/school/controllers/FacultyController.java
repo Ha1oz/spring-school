@@ -38,7 +38,6 @@ public class FacultyController {
     public Faculty get(Long id) {
         return facultyService.get(id);
     }
-
     @GetMapping("/by-color")
     public Collection<Faculty> getByColor(String color) {
         return facultyService.getByColor(color);
@@ -55,5 +54,9 @@ public class FacultyController {
     @GetMapping("/students")
     public Collection<Student> getAllStudentsFromFaculty(Long id) {
         return facultyService.get(id).getStudents();
+    }
+    @GetMapping("/longest-name")
+    public String getLongestName() {
+        return facultyService.getFacultyWithLongestName().getName();
     }
 }

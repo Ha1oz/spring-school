@@ -9,6 +9,7 @@ import ru.hogwarts.school.exceptions.FacultyNotFoundException;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -40,11 +41,11 @@ public class FacultyService {
         return facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new);
     }
 
-    public List<Faculty> getByColor(String color) {
+    public Collection<Faculty> getByColor(String color) {
         log.info("Get-by-color method was invoked.");
         return facultyRepository.findByColor(color);
     }
-    public List<Faculty> getByName(String name) {
+    public Collection<Faculty> getByName(String name) {
         log.info("Get-by-name method was invoked.");
         return facultyRepository.findByName(name);
     }
@@ -52,5 +53,15 @@ public class FacultyService {
     public Collection<Faculty> getAll() {
         log.info("Get-all method was invoked.");
         return facultyRepository.findAll();
+    }
+    public Faculty getFacultyWithLongestName(){
+        log.info("Get-faculty-with-longest-name method was invoked.");
+
+        Collection<Faculty> faculties = facultyRepository.findAll();
+
+        return faculties.stream()
+                .parallel()
+                .max(Comparator.comparingInt(f -> f.getName().length()))
+                .orElseThrow(FacultyNotFoundException::new);
     }
 }

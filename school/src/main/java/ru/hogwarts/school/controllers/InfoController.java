@@ -18,4 +18,8 @@ public class InfoController {
     public String getPortInfo(){
         return infoService.getPort();
     }
+    @GetMapping("/value")
+    public Long getValue() {
+        return infoService.getValue();
+    }
 }

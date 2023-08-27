@@ -8,6 +8,8 @@ import ru.hogwarts.school.exceptions.StudentNotFoundException;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -58,8 +60,35 @@ public class StudentService {
         log.info("Get-average-age method was invoked.");
         return studentRepository.getAverageAge();
     }
+    public Integer getAverageAgeMethod2() {
+        log.info("Get-average-age-2 method was invoked.");
+
+        Collection<Student> students = studentRepository.findAll();
+
+        int sumAge = students.stream()
+                .parallel()
+                .mapToInt(Student::getAge)
+                .sum();
+
+        return sumAge / students.size();
+    }
     public Collection<Student> getLastStudents() {
         log.info("Get-last-students method was invoked.");
         return studentRepository.getLastStudents();
+    }
+    public Collection<Student> getOrderedStartWithA() {
+        log.info("Get-ordered-start-with-a method was invoked.");
+        return studentRepository.getOrderedStudentsStartsWithA();
+    }
+    public Collection<String> getOrderedStartWithAMethod2() {
+        log.info("Get-ordered-start-with-a-2 method was invoked.");
+
+        Collection<Student> students = studentRepository.findAll();
+        return students.stream()
+                .parallel()
+                .filter(s -> s.getName().startsWith("A"))
+                .sorted(Comparator.comparing(Student::getName))
+                .map(f -> f.getName().toUpperCase())
+                .toList();
     }
 }
