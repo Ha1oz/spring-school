@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping("/avatars")
@@ -54,4 +55,18 @@ public class AvatarController {
             is.transferTo(os);
         }
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<Avatar>> getAllAvatars(@RequestParam("page") Integer pageNumber,@RequestParam("size") Integer pageSize) {
+        List<Avatar> avatarList = avatarService.getAllAvatars(pageNumber, pageSize);
+
+        if (avatarList.size() == 0) {
+            throw new AvatarNotFoundException();
+        }
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(avatarList);
+    }
+
 }
