@@ -79,9 +79,9 @@ public class StudentController {
        studentService.testThreads();
        return ResponseEntity.ok().build();
     }
-    @GetMapping("/test-threads-2")
-    public ResponseEntity testThreads2(){
-        studentService.testThreadsMethod2();
+    @GetMapping("/test-threads-sync")
+    public ResponseEntity testThreadsSync(){
+        studentService.testThreadsMethodSync();
         return ResponseEntity.ok().build();
     }
 }

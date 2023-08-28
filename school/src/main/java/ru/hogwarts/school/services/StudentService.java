@@ -7,9 +7,7 @@ import ru.hogwarts.school.entities.Student;
 import ru.hogwarts.school.exceptions.StudentNotFoundException;
 import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StudentService {
@@ -99,20 +97,36 @@ public class StudentService {
 
         doOperation(students.get(0), students.get(1));
 
-        new Thread(() -> doOperation(students.get(2), students.get(3))).start();
-        new Thread(() -> doOperation(students.get(4), students.get(5))).start();
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            doOperation(students.get(2), students.get(3));
+        })
+                .start();
+        new Thread(() -> doOperation(students.get(4), students.get(5)))
+                .start();
 
     }
-    public void testThreadsMethod2() {
-        log.info("Test-threads-2 method was invoked.");
+    public void testThreadsMethodSync() {
+        log.info("Test-threads-sync method was invoked.");
 
-        List<Student> students = studentRepository.findAll();
+        Queue<Student> queue = new LinkedList<>(studentRepository.findAll());
 
-        doOperationMethod2(students.get(0), students.get(1));
+        doOperationMethod2(queue);
 
-        new Thread(() -> doOperationMethod2(students.get(2), students.get(3)))
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            doOperationMethod2(queue);
+        })
                 .start();
-        new Thread(() -> doOperationMethod2(students.get(4), students.get(5)))
+        new Thread(() -> doOperationMethod2(queue))
                 .start();
 
     }
@@ -120,8 +134,10 @@ public class StudentService {
         System.out.println("student1 = " + student1);
         System.out.println("student2 = " + student2);
     }
-    private void doOperationMethod2(Student student1, Student student2){
+    private void doOperationMethod2(Queue<Student> queue){
         synchronized (flagObject) {
+            Student student1 = queue.poll();
+            Student student2 = queue.poll();
             System.out.println("student1 = " + student1);
             System.out.println("student2 = " + student2);
         }
