@@ -1,7 +1,5 @@
 package ru.hogwarts.school.controllers;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,19 +8,18 @@ import ru.hogwarts.school.entities.Avatar;
 import ru.hogwarts.school.exceptions.AvatarNotFoundException;
 import ru.hogwarts.school.services.AvatarService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/avatars")
 public class AvatarController {
     private final AvatarService avatarService;
-
     public AvatarController(AvatarService avatarService) {
         this.avatarService = avatarService;
     }
@@ -58,4 +55,18 @@ public class AvatarController {
             is.transferTo(os);
         }
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<Avatar>> getAllAvatars(@RequestParam("page") Integer pageNumber,@RequestParam("size") Integer pageSize) {
+        List<Avatar> avatarList = avatarService.getAllAvatars(pageNumber, pageSize);
+
+        if (avatarList.size() == 0) {
+            throw new AvatarNotFoundException();
+        }
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(avatarList);
+    }
+
 }

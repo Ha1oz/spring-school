@@ -24,8 +24,8 @@ public class FacultyController {
     }
 
     @PutMapping
-    public ResponseEntity<Faculty> update(@RequestBody Faculty faculty) {
-        return ResponseEntity.ok(facultyService.update(faculty));
+    public Faculty update(@RequestBody Faculty faculty) {
+        return facultyService.update(faculty);
     }
 
     @DeleteMapping
@@ -35,25 +35,28 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ResponseEntity<Faculty> get(Long id) {
-        return ResponseEntity.ok(facultyService.get(id));
+    public Faculty get(Long id) {
+        return facultyService.get(id);
     }
-
     @GetMapping("/by-color")
-    public ResponseEntity<Collection<Faculty>> getByColor(String color) {
-        return ResponseEntity.ok(facultyService.getByColor(color));
+    public Collection<Faculty> getByColor(String color) {
+        return facultyService.getByColor(color);
     }
     @GetMapping("/by-name")
-    public ResponseEntity<Collection<Faculty>> getByName(String name) {
-        return ResponseEntity.ok(facultyService.getByColor(name));
+    public Collection<Faculty> getByName(String name) {
+        return facultyService.getByColor(name);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Collection<Faculty>> getAll() {
-        return ResponseEntity.ok(facultyService.getAll());
+    public Collection<Faculty> getAll() {
+        return facultyService.getAll();
     }
     @GetMapping("/students")
-    public ResponseEntity<Collection<Student>> getAllStudentsFromFaculty(Long id) {
-        return ResponseEntity.ok(facultyService.get(id).getStudents());
+    public Collection<Student> getAllStudentsFromFaculty(Long id) {
+        return facultyService.get(id).getStudents();
+    }
+    @GetMapping("/longest-name")
+    public String getLongestName() {
+        return facultyService.getFacultyWithLongestName().getName();
     }
 }

@@ -1,5 +1,7 @@
 package ru.hogwarts.school.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -13,6 +15,7 @@ public class Faculty{
 
     private String color;
     @OneToMany(mappedBy = "faculty")
+    @JsonIgnore
     private Set<Student> students;
 
     public Faculty() {}
